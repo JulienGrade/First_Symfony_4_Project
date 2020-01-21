@@ -70,4 +70,22 @@ class PropertyController extends AbstractController{
             'current_menu' => 'properties'
         ]);
     }
+    /**
+     * @Route("/biens/{slug}-{id}", name="property.show", requirements={"slug": "[a-z0-9\-]*"})
+     * @param Property $property
+     * @return Response
+     */
+    public function show(Property $property, string $slug): Response
+    {
+        if($property->getSlug() !== $slug){
+            return $this->redirectToRoute('property.show', [
+                'id' => $property->getId(),
+                'slug' => $property->getSlug()
+            ], 301); // IMPORTANT POUR LE REFERENCEMENT PERMET DE REDIRIGER VERS LA PAGE SI INJECTION EN URL GENRE mon-premgdsqeier-bien DETECTE UN NON SLUG 
+        }
+        return $this->render('property/show.html.twig', [
+            'property' => $property,
+            'current_menu' => 'properties'
+        ]);
+    }
 };

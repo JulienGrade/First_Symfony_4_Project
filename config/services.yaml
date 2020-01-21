@@ -25,4 +25,7 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # fix the error of autowiring objectmanager : https://stackoverflow.com/questions/59240233/symfony-4-cannot-autowire-argument-manager-of-it-references-interface-do 
+    Doctrine\Common\Persistence\ObjectManager: '@doctrine.orm.default_entity_manager'
     

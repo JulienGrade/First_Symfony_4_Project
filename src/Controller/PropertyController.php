@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Property;
+use App\Entity\PropertySearch;
+use App\Form\PropertySearchType;
 use App\Repository\PropertyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Knp\Component\Pager\PaginatorInterface;
@@ -35,7 +37,8 @@ class PropertyController extends AbstractController{
      * @Route("/biens", name="property.index") 
      * @return Response
      */
-    public function index(PaginatorInterface $paginator, Request $request): Response{
+    public function index(PaginatorInterface $paginator, Request $request): Response
+    {
 
 
         /*
@@ -70,8 +73,18 @@ class PropertyController extends AbstractController{
         $property[0]->setSold(true); // Detecte automatiquement les changements et les enregistre dans la bdd
         $this->em->flush();
         */
+
+        // ICI ON TRAITE LE FORM DES FILTRES RECHERCHES
+
+        $search = new PropertySearch();
+        $form = $this->createForm(PropertySearchType::class, $search);
+        $form->handlerequest($request);
+
+
+        // ICI ON GERE LA PAGINATION
+
         $properties= $paginator->paginate(
-            $this->repository->findAllVisibleQuery(),
+            $this->repository->findAllVisibleQuery($search),
             $request->query->getInt('page', 1),
             12
         );
@@ -79,7 +92,8 @@ class PropertyController extends AbstractController{
 
         return $this->render('property/index.html.twig', [
             'current_menu' => 'properties',
-            'properties' => $properties
+            'properties' => $properties,
+            'form' => $form->createView()
         ]);
     }
     /**

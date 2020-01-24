@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Property;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -21,15 +22,15 @@ class PropertyRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Property[]
+     * @return Query
      */
-    public function findAllVisible(): array
+    public function findAllVisibleQuery(): Query
     {
         // On crée un querybuilder, un objet qui a pour but de concevoir une requete on lui donne un alias ici 'p' on devra utiliser p pour faire
         // référence à la table qui contient les properties
         return $this->findVisibleQuery()
             ->getQuery()  // Permet de récupérer la requete une fois celle ci parametrer comme on le veut
-            ->getResult()   // Permet de récupérer les résultats
+               // Permet de récupérer les résultats
         ;
     }
     /**

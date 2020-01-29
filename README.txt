@@ -1,1 +1,1 @@
-This is my first Symfony-4 project based on the Grafikart website
+This is my first Symfony-5 project based on the Grafikart website
